@@ -1,23 +1,24 @@
-import mysql from "mysql2"; // using mysql2 - installed npm library
-import "dotenv/config";
-import fs from "fs/promises";
+import mysql from "mysql2"; // Import the mysql2 library
+import "dotenv/config"; // Load environment variables
+import fs from "fs/promises"; // Import the file system promises module
 
-// using the variables from the .env file
-// and creates the connection to database
+// Database configuration from environment variables
 const dbConfig = {
     host: process.env.MYSQL_HOST,
     port: process.env.MYSQL_PORT,
     user: process.env.MYSQL_USER,
     database: process.env.MYSQL_DATABASE,
     password: process.env.MYSQL_PASSWORD,
-    multipleStatements: true
+    multipleStatements: true // Allow multiple SQL statements
 };
 
+// Add SSL certificate if provided in environment variables
 if (process.env.MYSQL_CERT) {
-    dbConfig.ssl = { cs: fs.readFile("DigiCertGlobalRootCA.crt.pem") };
+    dbConfig.ssl = { ca: fs.readFile("DigiCertGlobalRootCA.crt.pem") }; // Specify SSL certificate
 }
 
+// Create a connection to the database
 const dbConnection = mysql.createConnection(dbConfig);
 
-// exports database connection
+// Export the database connection
 export default dbConnection;
