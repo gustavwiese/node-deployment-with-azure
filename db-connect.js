@@ -14,7 +14,8 @@ const dbConfig = {
 
 // Add SSL certificate if provided in environment variables
 if (process.env.MYSQL_CERT) {
-    dbConfig.ssl = { ca: fs.readFile("DigiCertGlobalRootCA.crt.pem") }; // Specify SSL certificate
+    // Read the SSL certificate file asynchronously
+    dbConfig.ssl = { ca: await fs.readFile("DigiCertGlobalRootCA.crt.pem") }; // Specify SSL certificate
 }
 
 // Create a connection to the database
