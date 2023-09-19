@@ -1,35 +1,27 @@
-import express from "express";
-import fs from "fs/promises";
 import cors from "cors";
+import express from "express";
+import dbConnection from "./db-connect.js";
 
 const app = express();
-const port = process.env.PORT || 3333;
+const port = process.env.PORT || 3334;
 
-app.use(express.json()); // To parse JSON bodies
-app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // to parse JSON bodies
+app.use(cors());
 
-app.get("/", (request, response) => {
-    response.send("Node.js Users REST API 🎉");
+app.get("/", (req, res) => {
+    res.send("Node Express REST Users API");
 });
-
-async function getUsersFromJSON() {
-    const data = await fs.readFile("data.json");
-    const users = JSON.parse(data);
-    users.sort((userA, userB) => userA.name.localeCompare(userB.name));
-    return users;
-}
 
 // READ all users
-app.get("/users", async (request, response) => {
-    response.json(await getUsersFromJSON());
-});
-
-// READ one user
-app.get("/users/:id", async (request, response) => {
-    const id = request.params.id; // tager id fra url'en, så det kan anvendes til at finde den givne bruger med "det" id.
-    const users = await getUsersFromJSON();
-    const user = users.find(user => user.id === id);
-    response.json(user);
+app.get("/users", (request, response) => {
+    const query = "SELECT * FROM users ORDER BY name;"; // sql query to select all from the table users
+    dbConnection.query(query, (error, results, fields) => {
+        if (error) {
+            console.log(error);
+        } else {
+            response.json(results);
+        }
+    });
 });
 
 app.listen(port, () => {
