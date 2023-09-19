@@ -34,6 +34,4 @@ app.get("/users/:id", async (request, response) => {
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
-    console.log(`App listening on http://localhost:${port}`);
-    console.log(`Users Endpoint http://localhost:${port}/users`);
 });
