@@ -3,7 +3,7 @@ import express from "express";
 import dbConnection from "./db-connect.js";
 
 const app = express();
-const port = process.env.PORT || 3334;
+const port = process.env.PORT || 3333;
 
 app.use(express.json()); // to parse JSON bodies
 app.use(cors());
