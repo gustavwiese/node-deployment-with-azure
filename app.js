@@ -5,6 +5,10 @@ import cors from "cors";
 const app = express();
 const port = process.env.PORT || 3333;
 
+app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+});
+
 app.use(express.json()); // To parse JSON bodies
 app.use(cors()); // Enable CORS for all routes
 
